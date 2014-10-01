@@ -6,6 +6,7 @@
 # File and plugin names
 NAMES = $(shell ls -d hexd-*/ | tr -d /)
 PLUGINS = $(NAMES:=.so)
+URI_BASE = http://github.com/danilobellini/hexd-plugins-lv2/
 
 # LV2 information
 LV2PREFIX = $(shell pkg-config lv2 --variable=prefix)
@@ -44,14 +45,19 @@ all: $(NAMES)
 $(NAMES): %: %.so
 
 define so_to_obj_targets_template
+
 $(1).so: HEXD_LIBS = $(call get_define,$(1),HEXD_LIBS)
 $(1).so: $(1)/$(1).o
 	$(CC) -o $$@ $(LDFLAGS) $$< $$(HEXD_LIBS)
-endef
-$(foreach name, $(NAMES), $(eval $(call so_to_obj_targets_template,$(name))))
 
-%.o: %.$(SOURCE_EXT)
-	$(CC) -c $(CFLAGS) -o $@ $<
+$(1)/$(1).o: PLUGIN_URI = "\"$(URI_BASE)$(1)\""
+$(1)/$(1).o: CFILE = $(1)/$(1).$(SOURCE_EXT)
+$(1)/$(1).o:
+	$(CC) -c $(CFLAGS) -DPLUGIN_URI=$$(PLUGIN_URI) -o $$@ $$(CFILE)
+
+endef
+
+$(foreach name, $(NAMES), $(eval $(call so_to_obj_targets_template,$(name))))
 
 
 #

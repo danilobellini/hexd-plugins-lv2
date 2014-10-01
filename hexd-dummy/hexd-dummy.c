@@ -6,8 +6,6 @@
 #include "lv2.h"
 #include <stdlib.h>
 
-#define URI "http://github.com/danilobellini/hexd-plugins-lv2/hexd-dummy"
-
 typedef struct{ /* Ports (keeping manifest.ttl port index order) */
   float *in, *out;
 } Plugin;
@@ -43,9 +41,9 @@ static const void *extension_data(const char* uri){
   return NULL;
 }
 
-static const LV2_Descriptor PluginDescr = {URI, instantiate, connect_port,
-                                           activate, run, deactivate, cleanup,
-                                           extension_data};
+static const LV2_Descriptor Descr = {PLUGIN_URI, instantiate, connect_port,
+                                     activate, run, deactivate, cleanup,
+                                     extension_data};
 LV2_SYMBOL_EXPORT const LV2_Descriptor *lv2_descriptor(uint32_t idx){
-  return idx == 0 ? &PluginDescr : NULL;
+  return idx == 0 ? &Descr : NULL;
 }
