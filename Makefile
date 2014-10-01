@@ -52,7 +52,7 @@ $(1).so: $(1)/$(1).o
 
 $(1)/$(1).o: PLUGIN_URI = "\"$(URI_BASE)$(1)\""
 $(1)/$(1).o: CFILE = $(1)/$(1).$(SOURCE_EXT)
-$(1)/$(1).o:
+$(1)/$(1).o: $(1)/$(1).c
 	$(CC) -c $(CFLAGS) -DPLUGIN_URI=$$(PLUGIN_URI) -o $$@ $$(CFILE)
 
 endef

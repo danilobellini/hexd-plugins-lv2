@@ -8,8 +8,7 @@
 
 #define HEXD_LIBS -lm
 
-#define TWO_PI 6.2831853071795864769252867665590057683943387987502
-#define DEFAULT_CUTOFF 400
+#define DEFAULT_CUTOFF 400 /* From the manifest.ttl */
 
 /* Equations taken from the default AudioLazy lowpass filter: */
 /*   H(z) = (1 - r) / (1 - r * z^-1)                          */

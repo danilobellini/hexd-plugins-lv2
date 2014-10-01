@@ -15,8 +15,9 @@ typedef struct{ /* Ports (keeping manifest.ttl port index order) */
 } Plugin;
 
 static void activate(LV2_Handle instance){
-  ((Plugin *)instance)->old_gain = 0; /* 0dB gain ...           */
-  ((Plugin *)instance)->old = 1;      /* ... or 1.0x multiplier */
+  Plugin *plugin = (Plugin*)instance;
+  plugin->old_gain = 0; /* 0dB gain ...           */
+  plugin->old = 1;      /* ... or 1.0x multiplier */
 }
 
 static void run(LV2_Handle instance, uint32_t n){

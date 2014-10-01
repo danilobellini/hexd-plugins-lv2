@@ -1,26 +1,28 @@
-@prefix lv2: <http://lv2plug.in/ns/lv2core#>.
+@prefix : <http://lv2plug.in/ns/lv2core#>.
 @prefix doap: <http://usefulinc.com/ns/doap#>.
 @prefix foaf: <http://xmlns.com/foaf/0.1/>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 
 <http://github.com/danilobellini/hexd-plugins-lv2/hexd-dummy>
-  a lv2:Plugin, lv2:UtilityPlugin;
+  a :Plugin, :UtilityPlugin;
 
-  lv2:binary <hexd-dummy.so>;
+  :binary <hexd-dummy.so>;
 
-  lv2:port [
-    a lv2:AudioPort, lv2:InputPort;
-    lv2:name "Input";
-    lv2:index 0;
-    lv2:symbol "in";
-  ], [
-    a lv2:AudioPort, lv2:OutputPort;
-    lv2:name "Output";
-    lv2:index 1;
-    lv2:symbol "out";
+  :port [ a :AudioPort, :InputPort;
+    :index 0;
+    :name "Input";
+    :symbol "in";
+  ];
+ 
+  :port [ a :AudioPort, :OutputPort;
+    :index 1;
+    :name "Output";
+    :symbol "out";
   ];
 
-  doap:name "hexD Dummy";
+  doap:name "hexD Dummy I/O 'wire' eternal sameness";
+
+  doap:creator "Danilo de Jesus da Silva Bellini";
 
   doap:developer [
     foaf:name "Danilo de Jesus da Silva Bellini";

@@ -23,7 +23,7 @@
 
   :port [ a :ControlPort, :InputPort;
     :index 2;
-    :name "Gain (dB)";
+    :name "Gain";
     :symbol "gain";
 
     :minimum -40;
