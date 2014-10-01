@@ -11,7 +11,8 @@
 
 typedef struct{ /* Ports (keeping manifest.ttl port index order) */
   float *in, *out, *gain;
-  float old;
+  float old_gain, /* Old gain value in dB */
+        old;      /* Same, but already linear (i.e., a multiplier) */
 } Plugin;
 
 static LV2_Handle instantiate(const LV2_Descriptor *descr, double rate,
@@ -25,27 +26,41 @@ static void connect_port(LV2_Handle instance, uint32_t port, void *data){
 }
 
 static void activate(LV2_Handle instance){
-  ((Plugin *)instance)->old = 1;
+  ((Plugin *)instance)->old_gain = 0; /* 0dB gain ...           */
+  ((Plugin *)instance)->old = 1;      /* ... or 1.0x multiplier */
 }
 
 static void run(LV2_Handle instance, uint32_t n){
   Plugin *plugin = (Plugin*)instance;
+  uint32_t m, m3, mmm, t;
 
-  uint32_t m = n - 1,
-           m3 = 3 * m, 
-           mmm = m * m * m, 
-           t;
+  float old_gain = plugin->old_gain,
+        new_gain = *(plugin->gain),
+        old, new, delta;
 
-  float old = plugin->old,
-        new = pow(10, *(plugin->gain) / 20),
-        delta = new - old;
+  if(old_gain != new_gain){ /* Should interpolate! */
 
-  plugin->old = new;
+    old = plugin->old;
+    new = pow(10, new_gain / 20);
+    delta = new - old;
 
-  for(t = 0; t < n; t++)
-    plugin->out[t] = plugin->in[t] * (
-                       old + delta * ((m3 - (t << 1)) * (t * t)) / mmm
-                     );
+    plugin->old = new;
+    plugin->old_gain = new_gain;
+
+    m = n - 1; /* Interpolator design is in the control_interpolator.py */
+    m3 = 3 * m;
+    mmm = m * m * m;
+
+    for(t = 0; t < n; t++)
+      plugin->out[t] = plugin->in[t] * (
+                         old + delta * ((m3 - (t << 1)) * (t * t)) / mmm
+                       );
+
+  }else{ /* Constant gain, way simpler! */
+    old = plugin->old;
+    for(t = 0; t < n; t++)
+      plugin->out[t] = plugin->in[t] * old;
+  }
 }
 
 static void deactivate(LV2_Handle instance){
