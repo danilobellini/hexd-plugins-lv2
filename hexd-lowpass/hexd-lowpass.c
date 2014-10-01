@@ -34,12 +34,12 @@ static void activate(LV2_Handle instance){
 
 static void run(LV2_Handle instance, uint32_t n){
   Plugin *plugin = (Plugin*)instance;
-  uint32_t m, m3, mmm, t;
+  uint32_t t;
 
   float old_cutoff = plugin->old_cutoff,
         new_cutoff = *(plugin->cutoff),
         old_radius = plugin->radius,
-        x, radius, new_radius, gain, delta;
+        x, radius, new_radius, gain;
 
   if(old_cutoff != new_cutoff){ /* Should interpolate! */
     x = FILTER_X(new_cutoff * plugin->Hz);
@@ -48,13 +48,13 @@ static void run(LV2_Handle instance, uint32_t n){
     plugin->radius = new_radius;
     plugin->old_cutoff = new_cutoff;
 
-    m = n - 1; /* Interpolator design is in the control_interpolator.py */
-    m3 = 3 * m;
-    mmm = m * m * m;
-    delta = new_radius - old_radius;
+    hexdCInterpolatorGlobals cg;
+    hexdCInterpolator ci;
+    HEXD_C_INTERPOLATOR_GLOBALS_INIT(cg, n);
+    HEXD_C_INTERPOLATOR_INIT(ci, old_radius, new_radius);
 
     for(t = 0; t < n; t++){
-      radius = old_radius + delta * ((m3 - (t << 1)) * (t * t)) / mmm;
+      radius = HEXD_C_INTERPOLATE(cg, ci, t);
       plugin->mem = plugin->out[t] = plugin->in[t] * FILTER_GAIN(radius)
                                    + plugin->mem * radius;
     }

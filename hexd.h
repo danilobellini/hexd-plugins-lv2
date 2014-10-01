@@ -67,3 +67,22 @@ LV2_SYMBOL_EXPORT const LV2_Descriptor *lv2_descriptor(uint32_t index){      \
   return index == 0 ? &PluginDescription : NULL;                             \
 }
 
+
+/*
+ * Cubic interpolator. The design is better explained in the Python script
+ * "control_interpolator.py", using the Sympy CAS to get the equations below
+ */
+typedef struct{ uint32_t m3, mmm; } hexdCInterpolatorGlobals;
+typedef struct{ float old, delta; } hexdCInterpolator;
+
+#define HEXD_C_INTERPOLATOR_GLOBALS_INIT(cg, n) { uint32_t m = (n) - 1;   \
+                                                  (cg).m3 = 3 * m;        \
+                                                  (cg).mmm = m * m * m; }
+
+#define HEXD_C_INTERPOLATOR_INIT(ci, old_, new_) \
+  { (ci).old = (old_);                           \
+    (ci).delta = (new_) - (old_); }
+
+#define HEXD_C_INTERPOLATE(cg, ci, t) \
+  ( (ci).old + (ci).delta * ( (cg).m3 - ((t)<<1) ) * ((t)*(t)) / (cg).mmm )
+
