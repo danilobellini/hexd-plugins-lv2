@@ -26,14 +26,14 @@ UNINSTALL_NAMES = $(foreach name, $(NAMES), $(UNINSTALL_TARGET_PREFIX)$(name))
 # Compiler/linker parameters
 SOURCE_EXT = c
 CC = gcc
-CFLAGS = -Ofast -Wall -march=native -mtune=native -fPIC
+CFLAGS = -I. -Ofast -Wall -march=native -mtune=native -fPIC
 LDFLAGS = -shared
 
 # Helper function for getting a "#define" line using the C Preprocessor. Calls
 #   $(call get_define,a,B)
 # gets from file a/a.$(SOURCE_EXT) the "#define B Some value here" contents
 # (i.e., only the "Some value here" string in that example)
-get_define = $(shell cpp -dM $(1)/$(1).$(SOURCE_EXT) \
+get_define = $(shell cpp -I. -dM $(1)/$(1).$(SOURCE_EXT) \
                    | grep ^.define.$(2) \
                    | cut -d" " -f1,2 --complement)
 

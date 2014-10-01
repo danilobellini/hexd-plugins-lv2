@@ -3,8 +3,7 @@
  * License is GPLv3, see COPYING.txt for more details.
  * @author: Danilo de Jesus da Silva Bellini
  */
-#include "lv2.h"
-#include <stdlib.h>
+#include "hexd.h"
 #include <math.h>
 
 #define HEXD_LIBS -lm
@@ -14,16 +13,6 @@ typedef struct{ /* Ports (keeping manifest.ttl port index order) */
   float old_gain, /* Old gain value in dB */
         old;      /* Same, but already linear (i.e., a multiplier) */
 } Plugin;
-
-static LV2_Handle instantiate(const LV2_Descriptor *descr, double rate,
-                              const char* bundle_path,
-                              const LV2_Feature* const* features){
-  return (LV2_Handle)malloc(sizeof(Plugin));
-}
-
-static void connect_port(LV2_Handle instance, uint32_t port, void *data){
-  ((float**)instance)[port] = (float*)data;
-}
 
 static void activate(LV2_Handle instance){
   ((Plugin *)instance)->old_gain = 0; /* 0dB gain ...           */
@@ -63,20 +52,10 @@ static void run(LV2_Handle instance, uint32_t n){
   }
 }
 
-static void deactivate(LV2_Handle instance){
-}
-
-static void cleanup(LV2_Handle instance){
-  free((Plugin*)instance);
-}
-
-static const void *extension_data(const char* uri){
-  return NULL;
-}
-
-static const LV2_Descriptor Descr = {PLUGIN_URI, instantiate, connect_port,
-                                     activate, run, deactivate, cleanup,
-                                     extension_data};
-LV2_SYMBOL_EXPORT const LV2_Descriptor *lv2_descriptor(uint32_t idx){
-  return idx == 0 ? &Descr : NULL;
-}
+/* Creates the remaining functions and exports the plugin descriptor */
+HEXD_DEFAULT_INSTANTIATE_WITHOUT_RATE
+HEXD_DEFAULT_CONNECT_PORT
+HEXD_DEFAULT_DEACTIVATE
+HEXD_DEFAULT_CLEANUP
+HEXD_DEFAULT_EXTENSION_DATA
+HEXD_FINISH
