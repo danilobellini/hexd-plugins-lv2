@@ -1,0 +1,58 @@
+@prefix : <http://lv2plug.in/ns/lv2core#>.
+@prefix u: <http://lv2plug.in/ns/extension/units#>.
+@prefix doap: <http://usefulinc.com/ns/doap#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+
+<http://github.com/danilobellini/hexd-plugins-lv2/hexd-gain>
+  a :Plugin, :UtilityPlugin;
+
+  :binary <hexd-gain.so>;
+
+  :port [ a :AudioPort, :InputPort;
+    :index 0;
+    :name "Input";
+    :symbol "in";
+  ];
+ 
+  :port [ a :AudioPort, :OutputPort;
+    :index 1;
+    :name "Output";
+    :symbol "out";
+  ];
+
+  :port [ a :ControlPort, :InputPort;
+    :index 2;
+    :name "Gain (dB)";
+    :symbol "gain";
+
+    :minimum -40;
+    :maximum 40;
+    :default 0;
+
+    u:unit u:db;
+  ];
+
+  doap:name "hexD Gain";
+
+  doap:creator "Danilo de Jesus da Silva Bellini";
+
+  doap:developer [
+    foaf:name "Danilo de Jesus da Silva Bellini";
+    foaf:homepage <http://github.com/danilobellini>;
+    foaf:mbox <mailto:danilo.bellini@gmail.com>;
+  ];
+
+  doap:maintainer [
+    foaf:name "Danilo de Jesus da Silva Bellini";
+    foaf:homepage <http://github.com/danilobellini>;
+    foaf:mbox <mailto:danilo.bellini@gmail.com>;
+  ];
+
+  doap:license <GPLv3>;
+
+  rdfs:comment """
+A simple gain amplification/attenuation multiplier plugin using a cubic
+interpolator with zeroed derivatives at its extremes for smoothing the control
+input signal.
+""".
