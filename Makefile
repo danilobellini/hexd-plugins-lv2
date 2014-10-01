@@ -28,6 +28,14 @@ CC = gcc
 CFLAGS = -Ofast -Wall -march=native -mtune=native -fPIC
 LDFLAGS = -shared
 
+# Helper function for getting a "#define" line using the C Preprocessor. Calls
+#   $(call get_define,a,B)
+# gets from file a/a.$(SOURCE_EXT) the "#define B Some value here" contents
+# (i.e., only the "Some value here" string in that example)
+get_define = $(shell cpp -dM $(1)/$(1).$(SOURCE_EXT) \
+                   | grep ^.define.$(2) \
+                   | cut -d" " -f1,2 --complement)
+
 #
 # Compiler targets
 #
@@ -36,8 +44,9 @@ all: $(NAMES)
 $(NAMES): %: %.so
 
 define so_to_obj_targets_template
+$(1).so: HEXD_LIBS = $(call get_define,$(1),HEXD_LIBS)
 $(1).so: $(1)/$(1).o
-	$(CC) -o $$@ $(LDFLAGS) $$<
+	$(CC) -o $$@ $(LDFLAGS) $$< $$(HEXD_LIBS)
 endef
 $(foreach name, $(NAMES), $(eval $(call so_to_obj_targets_template,$(name))))
 

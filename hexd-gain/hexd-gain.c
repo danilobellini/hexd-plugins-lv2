@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+#define HEXD_LIBS -lm
+
 #define URI "http://github.com/danilobellini/hexd-plugins-lv2/hexd-gain"
 
 typedef struct{ /* Ports (keeping manifest.ttl port index order) */
