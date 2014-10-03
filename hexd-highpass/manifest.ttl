@@ -1,0 +1,68 @@
+@prefix : <http://lv2plug.in/ns/lv2core#>.
+@prefix u: <http://lv2plug.in/ns/extension/units#>.
+@prefix pp: <http://lv2plug.in/ns/ext/port-props#>.
+@prefix doap: <http://usefulinc.com/ns/doap#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+
+<http://github.com/danilobellini/hexd-plugins-lv2/hexd-highpass>
+  a :Plugin, :FilterPlugin, :HighpassPlugin;
+
+  :binary <hexd-highpass.so>;
+
+  :port [ a :AudioPort, :InputPort;
+    :index 0;
+    :name "Input";
+    :symbol "in";
+  ];
+ 
+  :port [ a :AudioPort, :OutputPort;
+    :index 1;
+    :name "Output";
+    :symbol "out";
+  ];
+
+  :port [ a :ControlPort, :InputPort;
+    :index 2;
+    :name "Cutoff Frequency";
+    :symbol "cutoff";
+
+    :minimum 20;
+    :maximum 20000;
+    :default 200;
+
+    :portProperty pp:logarithmic;
+    u:unit u:hz;
+  ];
+
+  doap:name "hexD Highpass filter (one zero and one pole, exact)";
+
+  doap:creator "Danilo de Jesus da Silva Bellini";
+
+  doap:developer [
+    foaf:name "Danilo de Jesus da Silva Bellini";
+    foaf:homepage <http://github.com/danilobellini>;
+    foaf:mbox <mailto:danilo.bellini@gmail.com>;
+  ];
+
+  doap:maintainer [
+    foaf:name "Danilo de Jesus da Silva Bellini";
+    foaf:homepage <http://github.com/danilobellini>;
+    foaf:mbox <mailto:danilo.bellini@gmail.com>;
+  ];
+
+  doap:license <GPLv3>;
+
+  rdfs:comment """
+Simple highpass filter based on a fully digital project (exact).
+
+The cutoff frequency is the one that have 50% power energy gain (aprox. -3dB)
+taken from the purely digital exact project model.
+
+That exact project model isn't a pre-warped bilinear transform nor a matched Z
+transform, but the analytical solution for the exact Z Transform frequency
+response gain. The proof for the filter equation used here can be found in the
+"math" directory of the AudioLazy Python DSP project.
+
+The implementation is in the direct form I.
+""".
