@@ -1,0 +1,43 @@
+@prefix : <http://lv2plug.in/ns/lv2core#>.
+@prefix doap: <http://usefulinc.com/ns/doap#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+
+<http://github.com/danilobellini/hexd-plugins-lv2/hexd-distortion>
+  a :Plugin, :DistortionPlugin;
+
+  :binary <hexd-distortion.so>;
+
+  :port [ a :AudioPort, :InputPort;
+    :index 0;
+    :name "Input";
+    :symbol "in";
+  ];
+ 
+  :port [ a :AudioPort, :OutputPort;
+    :index 1;
+    :name "Output";
+    :symbol "out";
+  ];
+
+  doap:name "hexD Distortion";
+
+  doap:creator "Danilo de Jesus da Silva Bellini";
+
+  doap:developer [
+    foaf:name "Danilo de Jesus da Silva Bellini";
+    foaf:homepage <http://github.com/danilobellini>;
+    foaf:mbox <mailto:danilo.bellini@gmail.com>;
+  ];
+
+  doap:maintainer [
+    foaf:name "Danilo de Jesus da Silva Bellini";
+    foaf:homepage <http://github.com/danilobellini>;
+    foaf:mbox <mailto:danilo.bellini@gmail.com>;
+  ];
+
+  doap:license <GPLv3>;
+
+  rdfs:comment """
+A [still incomplete] distortion effect.
+""".
