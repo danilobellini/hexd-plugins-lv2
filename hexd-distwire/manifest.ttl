@@ -3,24 +3,24 @@
 @prefix foaf: <http://xmlns.com/foaf/0.1/>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 
-<http://github.com/danilobellini/hexd-plugins-lv2/hexd-distortion>
+<http://github.com/danilobellini/hexd-plugins-lv2/hexd-distwire>
   a :Plugin, :DistortionPlugin;
 
-  :binary <hexd-distortion.so>;
+  :binary <hexd-distwire.so>;
 
   :port [ a :AudioPort, :InputPort;
     :index 0;
     :name "Input";
     :symbol "in";
   ];
- 
+
   :port [ a :AudioPort, :OutputPort;
     :index 1;
     :name "Output";
     :symbol "out";
   ];
 
-  doap:name "hexD Distortion";
+  doap:name "hexD DistWire distortion";
 
   doap:creator "Danilo de Jesus da Silva Bellini";
 

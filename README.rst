@@ -23,7 +23,7 @@ For now, the plugins available are:
 =============== ===================================================
 Directory       Plugin name
 =============== ===================================================
-hexd-distortion hexD Distortion
+hexd-distwire   hexD DistWire distortion
 hexd-dummy      hexD Dummy I/O 'wire' eternal sameness
 hexd-gain       hexD Gain
 hexd-highpass   hexD Lowpass filter (single pole, exact)
@@ -44,17 +44,31 @@ If you want to install for all users, do the same with sudo.
 The ``Makefile`` was highly customized to detect all plugins, and every
 plugin can be made separately by name, e.g.::
 
-  make hexd-distortion
-  make install-hexd-distortion
+  make hexd-distwire
+  make install-hexd-distwire
 
 You can also uninstall by name::
 
-  make uninstall-hexd-distortion
+  make uninstall-hexd-distwire
 
 Or uninstall every plugin with ``make uninstall``.
 
 If you have bash completion for make commands, the given Makefile will
 show/auto-complete the plugins by name.
+
+
+Curiosity
+---------
+
+The "DistWire" distortion was created when I was advising/teaching
+some DSP basics to some few students at Poli-USP (Brazil), and one of
+them asked me for an example of a memoryless system. The example I've
+created at that time is exactly the non-linear DISTWIRE macro in
+the ``hexd-distwire.c`` file, and the distortion name was discussed
+during the class, among the students. They said a sinusoid looked
+like a barbed wire / barbwire after processing with this distortion,
+hence the name "DistWire".
+
 
 ----
 
